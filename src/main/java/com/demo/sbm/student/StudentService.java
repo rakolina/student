@@ -2,9 +2,10 @@ package com.demo.sbm.student;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.List;
+import java.util.Optional;
+
 @Service
 public class StudentService {
 
@@ -12,12 +13,27 @@ public class StudentService {
 
     @Autowired
     public StudentService ( StudentRepository studentRepository ) {
-
         this.studentRepository = studentRepository;
     }
 
-    @GetMapping
-    public List<Student> getStudents() {
-        return studentRepository.findAll ();
+    public List< Student > getStudents ( ) {
+        return studentRepository.findAll ( );
+    }
+
+    public void addNewStudent ( Student newStudent ) {
+        Optional< Student > studentByEmail = studentRepository
+                .findStudentByEmail ( newStudent.getEmail ( ) );
+        if ( studentByEmail.isPresent ( ) ) {
+            throw new IllegalStateException ( "email exists" );
+        }
+        studentRepository.save ( newStudent );
+    }
+
+    public void removeStudent ( Long studentId ) {
+        Optional < Student > removeStudent = studentRepository
+                .findById ( studentId );
+        if ( removeStudent.isPresent () ) {
+            studentRepository.delete ( removeStudent.get () );
+        }
     }
 }

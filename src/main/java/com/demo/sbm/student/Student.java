@@ -57,30 +57,24 @@ public class Student {
     }
 
     public Integer getAge ( ) {
-        return age;
+        return Period.between ( this.dob, LocalDate.now () ).getYears ();
     }
 
     public void setAge ( Integer age ) {
         this.age = age;
     }
 
-
-    public Student ( ) {
-    }
+    public Student ( ) { }
 
     public Student ( Long id, String name, String email, LocalDate dob ) {
+        this ( name, email, dob );
         this.id = id;
-        this.name = name;
-        this.email = email;
-        this.dob = dob;
-        this.age = Period.between ( dob, LocalDate.now () ).getYears ();
     }
 
     public Student ( String name, String email, LocalDate dob ) {
         this.name = name;
         this.email = email;
         this.dob = dob;
-        this.age = Period.between ( dob, LocalDate.now () ).getYears ();
     }
 
     @Override
